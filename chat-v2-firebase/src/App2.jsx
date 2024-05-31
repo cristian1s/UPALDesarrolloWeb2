@@ -12,7 +12,8 @@ import {JSON_CHAT_LIST, JSON_CHAT_MESSAGES, JSON_USER_LIST} from "./utils/jsonCh
 // localStorage.setItem("chatMessages", JSON.stringify(JSON_CHAT_MESSAGES));
 // localStorage.setItem("chatList", JSON.stringify(JSON_CHAT_LIST));
 
-function App2() {
+function App2({ loggedIn, setLoggedIn}) {
+
   const chatMessages = localStorage.getItem("chatMessages");
   const chatList = localStorage.getItem("chatList");
   const [jsonChatMessages, setJsonChatMessages] = useState(
@@ -64,6 +65,7 @@ function App2() {
       return { ...prevState, [currentUser]: updatedUserList };
     });
   }, [chatSelected]);
+
 
   const handleChatSelected = (chatSelect) => {
     setChatSelected(chatSelect);
@@ -233,7 +235,7 @@ function App2() {
             })}
           </div>
           <div className="pr-2 flex items-center">
-            <Dropdown currentUser={currentUser} />
+            <Dropdown currentUser={currentUser} setLoggedIn={setLoggedIn} />
           </div>
         </div>
         <div

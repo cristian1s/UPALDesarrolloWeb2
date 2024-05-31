@@ -23,6 +23,15 @@ Homeworks:
 - [✔️] ordenar la lista de chats
 - [✔️] cambiar el ordend e los user de acuerdo a los mensajes y seleccionados
 
+
+# chat conect with firebase autenthicate and save messages -> PC1
+
+- [] create login UI
+- [] authenthication with firebase -> gmail
+- [] state of text entry "tiping"
+- [] state user in line "red = desactive" and "blue = active" 
+- [] implemente socket.io
+
 Steps init project.
 
 1. cd chat-v1

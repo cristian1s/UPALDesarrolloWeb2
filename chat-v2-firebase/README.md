@@ -23,12 +23,15 @@ Homeworks:
 - [✔️] ordenar la lista de chats
 - [✔️] cambiar el ordend e los user de acuerdo a los mensajes y seleccionados
 
-# ADD : CHAT ONLINE v2 - FIREBASE
+# chat conect with firebase autenthicate and save messages -> PC1
 
-- [] modify structure project (backend - conex - frontend - components)
-- [] 
-
-Steps init project.
+- [✔️] create login UI
+- [✔️] agregar routes 
+- [✔️] authenthication with firebase -> gmail
+- [✔️] darle credenciales al correo del profesor (gerardo.barzola.mentor@upal.edu.pe , 123456)
+- [] state of text entry "tiping"
+- [] state user in line "red = desactive" and "blue = active" 
+- [] implemente socket.io
 
 1. cd chat-v1
 2. npm install
