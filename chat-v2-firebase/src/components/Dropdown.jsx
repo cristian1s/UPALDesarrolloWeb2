@@ -7,12 +7,13 @@ const Dropdown = ({currentUser,setLoggedIn}) => {
 
   const navigate = useNavigate();
 
-  // const [menuOpen, setMenuOpen] = useState("hidden");
+  const [menuOpen, setMenuOpen] = useState("hidden");
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      setLoggedIn(true);
+      setLoggedIn(false);
+      localStorage.setItem("loggedIn", "false");
       navigate("/login");
     } catch (error) {
       console.error(error);
@@ -28,7 +29,7 @@ const Dropdown = ({currentUser,setLoggedIn}) => {
         data-dropdown-toggle="dropdownDots"
         className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-full hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
         type="button"
-        // onClick={() => setMenuOpen(menuOpen === "hidden" ? "block" : "hidden")}
+        onClick={() => setMenuOpen(menuOpen === "hidden" ? "block" : "hidden")}
       >
         <svg
           className="w-5 h-5"
@@ -44,8 +45,8 @@ const Dropdown = ({currentUser,setLoggedIn}) => {
       {/* <!-- Dropdown menu --> */}
       <div
         id="dropdownDots"
-        className={`margin-rigth10 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600`}
-        // style={menuOpen === "block" ? { position: "absolute", inset: "0px auto auto 0px", margin: "0px", transform: "translate(413px, 77px)" } : { }}
+        className={`margin-rigth10 z-10 ${menuOpen} bg-white divide-y divide-gray-100 rounded-lg shadow w-40 dark:bg-gray-700 dark:divide-gray-600`}
+        style={menuOpen === "block" ? { position: "absolute", inset: "0px auto auto 0px", margin: "0px", transform: "translate(413px, 77px)" } : { }}
         
       >
         <ul

@@ -4,7 +4,7 @@ import { auth , createUserWithEmailAndPassword,doc,signInWithEmailAndPassword } 
 // import "./login.css";
 import { MdError } from "react-icons/md";
 
-function Login({ loggedIn, setLoggedIn}) {
+function Login({ setUser, setLoggedIn}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState([false, ""]);
@@ -18,6 +18,8 @@ function Login({ loggedIn, setLoggedIn}) {
       await signInWithEmailAndPassword(auth, email, password);
       setLoggedIn(true);
       setError([false, ""]);
+      setUser(email);
+      // localStorage.setItem("loggedIn", "true");
       // location.href = "/chat";
       navigate("/chat");
     } catch (error) {

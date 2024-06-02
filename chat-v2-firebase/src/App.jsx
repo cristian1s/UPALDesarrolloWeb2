@@ -1,12 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import App2 from "./App2.jsx";
 import Login from "./Login.jsx";
 import "./App.css";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(true);
-  // const [email, setEmail] = useState("");t
+  
+  const [user, setUser] = useState("");
+
   // useEffect(() => {
   //   const Script = document.createElement("script");
   //   Script.src = "./src/assets/flowbite.min.js";
@@ -22,26 +24,27 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
+            element={<Login setLoggedIn={setLoggedIn} setUser={setUser} />}
           />
           <Route
             path="/login"
-            element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
+            element={<Login setLoggedIn={setLoggedIn} setUser={setUser} />}
           />
-          {/* <Route
+          <Route
             path="/chat"
             element={
               loggedIn ? (
-                <App2 loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+                <>
+                <App2 email={user} setLoggedIn={setLoggedIn} />
+                </>
               ) : (
-                <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+                <Login setLoggedIn={setLoggedIn} setUser={setUser} />
               )
-              // <App2 loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
             }
-          /> */}
-          <Route
+          />
+          {/* <Route
             path="/chat"
-            element={<App2 loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
+            element={<App2 loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} /> */}
         </Routes>
       </BrowserRouter>
     </div>

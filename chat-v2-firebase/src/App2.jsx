@@ -6,14 +6,18 @@ import Dropdown from "./components/Dropdown";
 import DropdownChat from "./components/DropdownChat";
 import { FaPlus } from "react-icons/fa6";
 import { IoMdSend } from "react-icons/io";
+import LoadScript from "./components/LoadScript.jsx";
 
-import {JSON_CHAT_LIST, JSON_CHAT_MESSAGES, JSON_USER_LIST} from "./utils/jsonChats";
+import {
+  JSON_CHAT_LIST,
+  JSON_CHAT_MESSAGES,
+  JSON_USER_LIST,
+} from "./utils/jsonChats";
 
 // localStorage.setItem("chatMessages", JSON.stringify(JSON_CHAT_MESSAGES));
 // localStorage.setItem("chatList", JSON.stringify(JSON_CHAT_LIST));
 
-function App2({ loggedIn, setLoggedIn}) {
-
+function App2({ email, setLoggedIn }) {
   const chatMessages = localStorage.getItem("chatMessages");
   const chatList = localStorage.getItem("chatList");
   const [jsonChatMessages, setJsonChatMessages] = useState(
@@ -65,7 +69,6 @@ function App2({ loggedIn, setLoggedIn}) {
       return { ...prevState, [currentUser]: updatedUserList };
     });
   }, [chatSelected]);
-
 
   const handleChatSelected = (chatSelect) => {
     setChatSelected(chatSelect);
@@ -203,57 +206,59 @@ function App2({ loggedIn, setLoggedIn}) {
   };
 
   return (
-    <div className="flex flex-row h-full gap-x-0  border-gray-300 rounded-xl overflow-hidden border-[0.3px] border-opacity-40 dark:border-none">
-      <div className="flex flex-col min-w-[512px]">
-        <div className="border-opacity-30 flex flex-row justify-between bg-[#F0F2F5] dark:bg-[#202C33] p-2 border-r-[0.8px] border-slate-300 dark:border-white-30 ">
-          <div className="flex flex-row gap-x-4 py-1">
-            {Object.entries(chatUsers).map(([key, value]) => {
-              return (
-                <button
-                  onClick={() => setCurrentUser(key)}
-                  key={key}
-                  className="relative"
-                >
-                  <img
-                    className={`rounded-full ${
-                      currentUser === key
-                        ? "w-[42px] border-4 border-blue-300"
-                        : "w-[34px] grayscale "
-                    }`}
-                    src={value.avatar}
-                    alt={`User ${key}`}
-                  />
-                  <span
-                    className={`absolute span-alert ${
-                      chatUsers[key].unread == 0 ? "" : "active"
-                    }`}
+    <>
+      <div className="flex flex-row h-full gap-x-0  border-gray-300 rounded-xl overflow-hidden border-[0.3px] border-opacity-40 dark:border-none">
+        {/* <div>{email}</div> */}
+        <div className="flex flex-col min-w-[512px]">
+          <div className="border-opacity-30 flex flex-row justify-between bg-[#F0F2F5] dark:bg-[#202C33] p-2 border-r-[0.8px] border-slate-300 dark:border-white-30 ">
+            <div className="flex flex-row gap-x-4 py-1">
+              {Object.entries(chatUsers).map(([key, value]) => {
+                return (
+                  <button
+                    onClick={() => setCurrentUser(key)}
+                    key={key}
+                    className="relative"
                   >
-                    {chatUsers[key].unread == 0 ? "" : chatUsers[key].unread}
-                  </span>
-                </button>
-              );
-            })}
+                    <img
+                      className={`rounded-full ${
+                        currentUser === key
+                          ? "w-[42px] border-4 border-blue-300"
+                          : "w-[34px] grayscale "
+                      }`}
+                      src={value.avatar}
+                      alt={`User ${key}`}
+                    />
+                    <span
+                      className={`absolute span-alert ${
+                        chatUsers[key].unread == 0 ? "" : "active"
+                      }`}
+                    >
+                      {chatUsers[key].unread == 0 ? "" : chatUsers[key].unread}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="pr-2 flex items-center">
+              <Dropdown currentUser={currentUser} setLoggedIn={setLoggedIn} />
+            </div>
           </div>
-          <div className="pr-2 flex items-center">
-            <Dropdown currentUser={currentUser} setLoggedIn={setLoggedIn} />
-          </div>
-        </div>
-        <div
-          className={`h-full border-r-[0.8px] border-opacity-20 border-[#ffffff]  dark:border-white-30 dark:bg-[#111B21] dark:text-white pt-4`}
-        >
-          {Object.entries(jsonChatList).map(([key, value]) => {
-            if (key == currentUser) {
-              //ordenar los chats por fecha
-              value.sort((a, b) => {
-                return new Date(b.date) - new Date(a.date);
-              });
+          <div
+            className={`h-full border-r-[0.8px] border-opacity-20 border-[#ffffff]  dark:border-white-30 dark:bg-[#111B21] dark:text-white pt-4`}
+          >
+            {Object.entries(jsonChatList).map(([key, value]) => {
+              if (key == currentUser) {
+                //ordenar los chats por fecha
+                value.sort((a, b) => {
+                  return new Date(b.date) - new Date(a.date);
+                });
 
-              return value.map((chat, index) => (
-                <ChatList
-                  key={index}
-                  onClick={() => handleChatSelected(chat.title)}
-                  dataSource={[chat]}
-                  className={`
+                return value.map((chat, index) => (
+                  <ChatList
+                    key={index}
+                    onClick={() => handleChatSelected(chat.title)}
+                    dataSource={[chat]}
+                    className={`
                     ${chat.unread > 0 ? "active" : ""} 
                     ${
                       chatSelected === chat.title
@@ -261,91 +266,94 @@ function App2({ loggedIn, setLoggedIn}) {
                         : ""
                     } 
                     dark:hover:bg-[#202C33] dark:text-white`}
-                />
-              ));
-            }
-          })}
+                  />
+                ));
+              }
+            })}
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col w-full h-ull justify-between">
-        <div>
-          <div className="flex flex-row justify-between bg-[#F0F2F5] dark:bg-[#202C33] px-4 py-2 h-[66.44px]">
-            <button className="flex flex-row gap-x-6 items-center ">
-              <img
-                className="rounded-full w-[44px]"
-                src={chatUsers[chatSelected].avatar}
-                alt={`User ${chatSelected}`}
+        <div className="flex flex-col w-full h-ull justify-between">
+          <div>
+            <div className="flex flex-row justify-between bg-[#F0F2F5] dark:bg-[#202C33] px-4 py-2 h-[66.44px]">
+              <button className="flex flex-row gap-x-6 items-center ">
+                <img
+                  className="rounded-full w-[44px]"
+                  src={chatUsers[chatSelected].avatar}
+                  alt={`User ${chatSelected}`}
+                />
+                <span className="dark:text-white text-lg">{chatSelected}</span>
+              </button>
+              <div className="flex items-center">
+                <DropdownChat></DropdownChat>
+              </div>
+            </div>
+          </div>
+          <div
+            ref={chatContainerRef}
+            className="p-4 relative bg-[url('./assets/imageFinalLigth.png')] dark:bg-[url('./assets/fondoChat.jpg')] bg-blur bg-cover h-full overflow-y-auto overflow-custom"
+          >
+            {/* <div className="background-blur-opacity"></div> */}
+            {Object.entries(jsonChatMessages).map(([key, value]) => {
+              let chatKey = `${currentUser}-${chatSelected}`;
+              let chatKeyReverse = `${chatSelected}-${currentUser}`;
+              if (key == chatKey || key == chatKeyReverse) {
+                return value.map((message, index) => (
+                  <MessageBox
+                    key={index}
+                    position={message.title === currentUser ? "right" : "left"}
+                    type={message.type}
+                    // title={message.title}
+                    text={message.text}
+                    date={new Date(message.fechaHora)}
+                    replyButton={message.title === currentUser ? true : false}
+                    onReplyClick={() => handleForward(message.id)}
+                    className={`${message.estate == "edit" ? "editado" : ""}`}
+                    // onForwardClick={() => alert("Forward")}
+                    // renderAddCmp={() => <div  className="bg-red-950 w-6 button_edit"><button onClick={()=>alert("ss")}>A</button></div>}
+                    // forwarded={true}
+                    // forwardedMessageText="Mensaje reenviado"
+                    // retracted={message.estate == "edit"? true:false} //eliminar mensajes
+                    // removeButton={true}
+                    // edit={message.estate == "edit"? true:false}
+                    status={
+                      message.title === currentUser ? "read" : "delivered"
+                    }
+                  />
+                ));
+              }
+            })}
+          </div>
+          <div className="flex flex-row gap-x-4  justify-between w-full bg-[#F0F2F5] dark:bg-[#202C33] p-3  h-[60px]">
+            <div className="flex items-center justify-center">
+              <FaPlus className="w-6 h-6 dark:text-slate-400" />
+            </div>
+            <div className="w-[95%]">
+              <textarea
+                placeholder="Type a message..."
+                className="w-full overflow-hidden rounded-lg resize-none p-2 h-full dark:bg-slate-600 border-none outline-none dark:text-[#c1c5c7] focus:shadow-none focus:ring-0"
+                style={{
+                  height: "2.8em",
+                  fontSize: "14px",
+                  outline: "none !important",
+                  border: "none !important",
+                  boxShadow: "none !important",
+                }}
+                onKeyDown={hadlekeyPress}
               />
-              <span className="dark:text-white text-lg">{chatSelected}</span>
-            </button>
-            <div className="flex items-center">
-              <DropdownChat></DropdownChat>
+            </div>
+            <div className="w-[5%] flex items-center justify-center">
+              <button
+                type="button"
+                onClick={() => handleSend(chatSelected)}
+                className="w-full h-full"
+              >
+                <IoMdSend className="w-7 h-7 dark:text-slate-400" />
+              </button>
             </div>
           </div>
         </div>
-        <div
-          ref={chatContainerRef}
-          className="p-4 relative bg-[url('./assets/imageFinalLigth.png')] dark:bg-[url('./assets/fondoChat.jpg')] bg-blur bg-cover h-full overflow-y-auto overflow-custom"
-        >
-          {/* <div className="background-blur-opacity"></div> */}
-          {Object.entries(jsonChatMessages).map(([key, value]) => {
-            let chatKey = `${currentUser}-${chatSelected}`;
-            let chatKeyReverse = `${chatSelected}-${currentUser}`;
-            if (key == chatKey || key == chatKeyReverse) {
-              return value.map((message, index) => (
-                <MessageBox
-                  key={index}
-                  position={message.title === currentUser ? "right" : "left"}
-                  type={message.type}
-                  // title={message.title}
-                  text={message.text}
-                  date={new Date(message.fechaHora)}
-                  replyButton={message.title === currentUser ? true : false}
-                  onReplyClick={() => handleForward(message.id)}
-                  className={`${message.estate == "edit" ? "editado" : ""}`}
-                  // onForwardClick={() => alert("Forward")}
-                  // renderAddCmp={() => <div  className="bg-red-950 w-6 button_edit"><button onClick={()=>alert("ss")}>A</button></div>}
-                  // forwarded={true}
-                  // forwardedMessageText="Mensaje reenviado"
-                  // retracted={message.estate == "edit"? true:false} //eliminar mensajes
-                  // removeButton={true}
-                  // edit={message.estate == "edit"? true:false}
-                  status={message.title === currentUser ? "read" : "delivered"}
-                />
-              ));
-            }
-          })}
-        </div>
-        <div className="flex flex-row gap-x-4  justify-between w-full bg-[#F0F2F5] dark:bg-[#202C33] p-3  h-[60px]">
-          <div className="flex items-center justify-center">
-            <FaPlus className="w-6 h-6 dark:text-slate-400" />
-          </div>
-          <div className="w-[95%]">
-            <textarea
-              placeholder="Type a message..."
-              className="w-full overflow-hidden rounded-lg resize-none p-2 h-full dark:bg-slate-600 border-none outline-none dark:text-[#c1c5c7] focus:shadow-none focus:ring-0"
-              style={{
-                height: "2.8em",
-                fontSize: "14px",
-                outline: "none !important",
-                border: "none !important",
-                boxShadow: "none !important",
-              }}
-              onKeyDown={hadlekeyPress}
-            />
-          </div>
-          <div className="w-[5%] flex items-center justify-center">
-            <button
-              type="button"
-              onClick={() => handleSend(chatSelected)}
-              className="w-full h-full"
-            >
-              <IoMdSend className="w-7 h-7 dark:text-slate-400" />
-            </button>
-          </div>
-        </div>
       </div>
-    </div>
+    </>
   );
 }
 
